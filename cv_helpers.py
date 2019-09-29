@@ -19,8 +19,13 @@ def cv2_show_img(img):
     cv2.imshow('', img)
     cv2.waitKey(ANY_KEY)
 
-def show_compared_imgs(img1, img2, title=''):
-    img_comparison = np.concatenate((img1, img2), axis=1)
+def show_compared_imgs(*imgs, title=''):
+    img_comparison = np.concatenate((imgs[0], imgs[1]), axis=1)
+
+    if len(imgs) > 2:
+        for i in range(2, len(imgs) - 1):
+            img_comparison = np.concatenate((img_comparison, imgs[i]), axis=1)
+    
     plt_show_img(img_comparison, title)
 
 def start_video(camera = 0, img_modifier = None, *img_mod_params):
