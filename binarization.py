@@ -3,6 +3,7 @@ import cv_helpers as helpers
 from cv2 import cv2
 
 def otsu_binarization(img):
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     return cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
 if __name__ == '__main__':

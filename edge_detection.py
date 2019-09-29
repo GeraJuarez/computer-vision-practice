@@ -44,7 +44,7 @@ def apply_canny(frame, *params):
 
 if __name__ == '__main__':
     try:
-        helpers.start_video(0, apply_canny)
+        helpers.start_video(0, apply_sobel)
 
     except Exception as error:
         print(error)
