@@ -1,17 +1,9 @@
+import numpy as np
+import cv_helpers as helpers
 # import cv # use this instead of the line below
 from cv2 import cv2 # this ignores vscode bug of not detecting functions form cv2
-import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
-
-def plt_show_img(img):
-    plt.imshow(img, cmap='gray')
-    plt.show()
-
-def cv2_show_img(img):
-    ANY_KEY = 0
-    cv2.imshow('', img)
-    cv2.waitKey(ANY_KEY)
 
 def apply_fourier_transform(img):
     dft = cv2.dft(np.float32(img), flags = cv2.DFT_COMPLEX_OUTPUT)
@@ -119,16 +111,16 @@ def optimize_img_for_DFT(img):
 
 
 if __name__ == '__main__':
-    #img = cv2.imread('images/ciel_bw.jpg', cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread('images/ciel_bw.jpg', cv2.IMREAD_GRAYSCALE)
     #img = optimize_img_for_DFT(img)
 
     #spectrum = get_spectrum(img)
-    #hpf = apply_hpf(img)
+    hpf = apply_hpf(img)
     #lpf = apply_lpf(img)
     #bpf = apply_bpf(img)
 
     #img_comparison = np.concatenate((img, spectrum), axis=1)
-    #plt_show_img(hpf)
+    helpers.plt_show_img(hpf)
 
     
     def grab_frame(cap):
