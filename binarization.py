@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     try:
         img_path = sys.argv[1]
-        img = cv2.imread(img_path, 0)
+        img = cv2.imread(img_path, cv2.IMREAD_COLOR)
         ret, imgf = otsu_binarization(img)
 
         helpers.show_compared_imgs(img, imgf, 'Orginal vs Otsu Binarization')
