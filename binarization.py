@@ -1,10 +1,16 @@
 import sys
+import numpy as np
 import cv_helpers as helpers
 from cv2 import cv2
 
 def otsu_binarization(img):
     img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     return cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+def mask_binarization(img):
+    _, binarized_img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    mask = np.where(binarized_img==255, 1, binarized_img)
+    return mask
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
