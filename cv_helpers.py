@@ -28,20 +28,20 @@ def show_compared_imgs(*imgs, title=''):
     
     plt_show_img(img_comparison, title)
 
-def start_video(camera = 0, img_modifier = None, *img_mod_params):
-    def get_frame(cap):
-        _, frame = cap.read()
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-        return frame
-
+def start_video(camera = 0, img_filter = None, *img_mod_params):
     cap = cv2.VideoCapture(camera)
-    frame_view = plt.imshow(get_frame(cap), cmap='gray')
+    plt.xticks([])
+    plt.yticks([])
+    _, frame = cap.read()
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    frame_view = plt.imshow(frame, cmap='gray')
 
     def update(i):
-        frame = get_frame(cap)
-        if img_modifier is not None:
-            frame = img_modifier(frame, *img_mod_params)
+        _, frame = cap.read()
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        if img_filter is not None:
+            frame = img_filter(frame, *img_mod_params)
+
         frame_view.set_data(frame)
 
     _ = FuncAnimation(plt.gcf(), update, interval=200)
