@@ -28,7 +28,7 @@ def show_compared_imgs(*imgs, title=''):
     
     plt_show_img(img_comparison, title)
 
-def start_video(camera = 0, img_filter = None, *img_mod_params):
+def start_video(camera = 0, img_filter = None, *img_filter_params):
     cap = cv2.VideoCapture(camera)
     plt.xticks([])
     plt.yticks([])
@@ -40,9 +40,26 @@ def start_video(camera = 0, img_filter = None, *img_mod_params):
         _, frame = cap.read()
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         if img_filter is not None:
-            frame = img_filter(frame, *img_mod_params)
+            frame = img_filter(frame, *img_filter_params)
 
         frame_view.set_data(frame)
 
     _ = FuncAnimation(plt.gcf(), update, interval=200)
     plt.show()
+
+def start_cv_video(camera = 0, img_filter = None, *img_filter_params):
+    cap = cv2.VideoCapture(camera)
+    print('Press q to exit...')
+    while(True):
+        _, frame = cap.read()
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        if img_filter is not None:
+            frame = img_filter(frame, *img_filter_params)
+
+        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+        cv2.imshow('', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
