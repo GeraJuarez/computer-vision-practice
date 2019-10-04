@@ -8,6 +8,10 @@ def rgb_filter(img, *params):
     binarized_r = otsu_binarization(red)
     binarized_g = otsu_binarization(green)
     binarized_b = otsu_binarization(blue)
+
+    #binarized_r = np.where(binarized_r==255, 0, binarized_r)
+    #binarized_g = np.where(binarized_g==255, 0, binarized_g)
+    #binarized_b = np.where(binarized_b==255, 0, binarized_b)
     mask = cv2.merge( (binarized_r, binarized_g, binarized_b) )
 
     if len(params) > 0:
