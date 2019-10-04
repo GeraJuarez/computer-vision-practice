@@ -7,3 +7,4 @@ Filters so far:
 * Script to modify brightness and contrast
 * Otsu binarization
 * Binary mask filter using otsu binarization and an edge detector
+* RGB segmentation
