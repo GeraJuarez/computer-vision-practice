@@ -16,8 +16,8 @@ def rgb_filter(img, *params):
 
     if len(params) > 0:
         kernel_size = int(params[0]) if len(params) > 0 else 5
-        dilate_iter = int(params[1]) if len(params) > 1 else 1
-        erode_iter = int(params[2]) if len(params) > 2 else 1
+        dilate_iter = int(params[1]) if len(params) > 1 else 0
+        erode_iter = int(params[2]) if len(params) > 2 else 0
 
         kernel = np.ones((kernel_size,kernel_size), np.uint8)
         mask = cv2.dilate(mask, kernel, iterations=dilate_iter)
@@ -26,28 +26,24 @@ def rgb_filter(img, *params):
     return mask
 
 if __name__ == '__main__':
-    import sys
+    import argparse
 
-    argv_size = len(sys.argv)
-    if sys.argv[1] == '-c':
-        if argv_size > 2:
-            params = sys.argv[2:argv_size]
-            start_cv_video(0, rgb_filter, *params)
-        else:
-            start_cv_video(0, rgb_filter)
+    parser = argparse.ArgumentParser(description='RGB filter')
+    parser.add_argument('-i', '--image', type=str, action='store', dest='src_img', help='The image to apply the filter')
+    parser.add_argument('-ks', '--kernel_size', type=int, default=5, action='store', dest='kernel_size', help='The size of the kernel when applying dilatation or erotion')
+    parser.add_argument('-d', '--dilate', type=int, default=0, action='store', dest='dilate_iter', help='Number of times to apply the Dilate operation')
+    parser.add_argument('-e', '--erode', type=int, default=0, action='store', dest='erode_iter', help='Number of times to apply the Erode operation')
+    args = parser.parse_args()
 
-    else:
+    if args.src_img:
         try:
-            img_path = sys.argv[1]
-            img = cv2.imread(img_path, cv2.IMREAD_COLOR)
+            img = cv2.imread(args.src_img, cv2.IMREAD_COLOR)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-            if argv_size > 2:
-                params = sys.argv[2:argv_size]
-                rgb_img = rgb_filter(img, *params)    
-            else: 
-                rgb_img = rgb_filter(img)
+            rgb_img = rgb_filter(img, args.kernel_size, args.dilate_iter, args.erode_iter)
             plt_show_img(rgb_img)
 
         except Exception as error:
             print(error)
+
+    else:
+        start_cv_video(0, rgb_filter, args.kernel_size, args.dilate_iter, args.erode_iter)
