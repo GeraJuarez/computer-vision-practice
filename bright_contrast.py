@@ -8,9 +8,9 @@ def apply_contrast_brightness(img, *params):
     #alpha = 1.0 # Simple contrast control
     #beta = 0    # Simple brightness control
 
-    #new_image = cv2.convertScaleAbs(img, alpha=params[0], beta=params[1])
-    #new_image = (img * params[0]) + params[1]
-    new_image = cv2.addWeighted(img, alpha, img, 0, beta)
+    new_image = cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
+    #new_image = (img * alpha) + beta
+    #new_image = cv2.addWeighted(img, alpha, img, 0, beta)
     return new_image
 
 if __name__ == '__main__':

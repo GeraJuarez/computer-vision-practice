@@ -10,7 +10,7 @@ def apply_sobel(img, *params):
     delta = 0
     kernel_size = 3
 
-    img = cv2.GaussianBlur(img, (3, 3), 0)
+    img = cv2.GaussianBlur(img, (3, 3), cv2.BORDER_DEFAULT)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
     grad_x = cv2.Sobel(img, ddepth, 1, 0, ksize=kernel_size, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
@@ -24,7 +24,7 @@ def apply_sobel(img, *params):
     return new_image
 
 def apply_prewitt(img, *params):
-    img = cv2.GaussianBlur(img, (3, 3), 0)
+    img = cv2.GaussianBlur(img, (3, 3), cv2.BORDER_DEFAULT)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
     kernel_x = np.array([[1,1,1],[0,0,0],[-1,-1,-1]])
