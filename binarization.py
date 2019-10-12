@@ -3,9 +3,8 @@ import numpy as np
 from cv_helpers import plt_hist, start_cv_video, plt_show_img
 from cv2 import cv2
 
-def otsu_grayscale_binarization(img): 
-    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    _ , img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+def grayscale_binarization(img, threshold=127): 
+    _ , img = cv2.threshold(img, threshold, 255, cv2.THRESH_BINARY)
     return img
 
 def otsu_binarization(img):
@@ -13,9 +12,8 @@ def otsu_binarization(img):
     return binarized_img
 
 def mask_binarization(img):
-    _, binarized_img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    mask = np.where(binarized_img==255, 1, binarized_img)
-    return mask
+    _, binarized_img = cv2.threshold(img, 0, 1, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    return binarized_img
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
