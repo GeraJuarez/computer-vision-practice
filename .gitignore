@@ -1,4 +1,5 @@
 __pycache__/
 /comp_vision_env
+env*
 /.vscode
 /img*
