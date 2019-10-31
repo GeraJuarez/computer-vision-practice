@@ -61,7 +61,7 @@ def find_image_in_frame(dmatches, train_pts, new_pts, train_img_h, train_img_w):
     src_pts = np.float32([train_pts[m.queryIdx].pt for m in dmatches]).reshape(-1,1,2)
     dst_pts = np.float32([new_pts[m.trainIdx].pt for m in dmatches]).reshape(-1,1,2)
 
-    homography_matrix, _ = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
+    homography_matrix, _ = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
     pts = np.float32([ [0, 0], [0, train_img_h - 1], [train_img_w - 1, train_img_h - 1], [train_img_w - 1, 0] ]).reshape(-1,1,2)
     dst = cv2.perspectiveTransform(pts, homography_matrix)
 
@@ -71,6 +71,7 @@ def get_matches(train_desc, new_desc):
     '''
         Match descriptors and sort them in the order of their distance
     '''
+    #cv2.NORM_HAMMING2
     bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
     matches = bf.match(train_desc, new_desc)
     dmatches = sorted(matches, key = lambda x:x.distance)

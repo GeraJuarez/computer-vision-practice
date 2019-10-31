@@ -1,6 +1,5 @@
 import numpy as np
 import cv_helpers as helpers
-# import cv # use this instead of the line below
 from cv2 import cv2 # this ignores vscode bug of not detecting functions form cv2
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -112,7 +111,7 @@ def optimize_img_for_DFT(img):
 
 if __name__ == '__main__':
     img = cv2.imread('images/ciel_bw.jpg', cv2.IMREAD_GRAYSCALE)
-    #img = optimize_img_for_DFT(img)
+    #img = optimize_img_for_DFT(img) 
 
     #spectrum = get_spectrum(img)
     hpf = apply_hpf(img)
@@ -141,26 +140,3 @@ if __name__ == '__main__':
 
     ani = FuncAnimation(plt.gcf(), update, interval=200)
     plt.show()
-    
-
-'''
-    cv2.imshow not working
-    DEFAULT_CAM = 0
-    cap = cv2.VideoCapture(DEFAULT_CAM)
-    while(True):
-        # Capture frame-by-frame
-        ret, frame = cap.read()
-
-        # Our operations on the frame come here
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        spectrum = apply_hpf(gray)
-        plt_show_img(spectrum)
-
-        # Display the resulting frame
-        #cv2.imshow('frame', gray)
-        #if cv2.waitKey(0):
-         #   break
-
-    cap.release()
-    cv2.destroyAllWindows()
-'''

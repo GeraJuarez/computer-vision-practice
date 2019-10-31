@@ -4,9 +4,6 @@ from cv_helpers import cv2_show_img, plt_show_img, start_cv_video
 from bright_contrast import apply_contrast_brightness
 from binarization import otsu_binarization, grayscale_binarization
 from edge_detection import apply_sobel, apply_canny, apply_prewitt
-# increase contrast
-# gauusian and grayscale
-# closing
 
 def filter(img, *params):
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
