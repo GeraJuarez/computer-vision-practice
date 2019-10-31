@@ -15,6 +15,10 @@ def mask_binarization(img):
     _, binarized_img = cv2.threshold(img, 0, 1, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     return binarized_img
 
+def adaptative_biarization(img, max_val=255, neighboor_param=115):
+    binarized_img = cv2.adaptiveThreshold(img, max_val, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, neighboor_param, 1)
+    return binarized_img
+
 def slow_binarization(img, threshold=127):
     img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     height, width = img.shape
