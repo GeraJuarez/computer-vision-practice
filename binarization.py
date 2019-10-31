@@ -15,6 +15,19 @@ def mask_binarization(img):
     _, binarized_img = cv2.threshold(img, 0, 1, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     return binarized_img
 
+def slow_binarization(img, threshold=127):
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    height, width = img.shape
+    binary = np.zeros([height, width, 1], 'uint8')
+
+    for row in range(0, height):
+        for col in range(0, width):
+            if img[row][col] > threshold:
+                binary[row][col] = 255
+
+    return binary
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         start_cv_video(img_filter=otsu_binarization)
