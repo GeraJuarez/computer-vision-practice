@@ -1,9 +1,8 @@
 import numpy as np
 from cv2 import cv2
 from cv_helpers import cv2_show_img, plt_show_img, start_cv_video, RGB_RED, RGB_BLUE, RGB_GREEN
-from bright_contrast import apply_contrast_brightness
 from binarization import otsu_binarization, grayscale_binarization
-from edge_detection import apply_sobel, apply_canny, apply_prewitt
+from edge_detection import apply_sobel
 
 def filter(img, *params):
     kernel = np.ones((3,3),np.uint8)
@@ -57,16 +56,6 @@ def draw_circles(img):
             cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), RGB_GREEN, -1)
     
     return output
-
-def increase_sat(img):
-    img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV).astype('float32')
-    h, s, v = cv2.split(img)
-    s = s + 200
-    s = np.clip(s,0,255)
-    imghsv = cv2.merge((h,s,v))
-    imghsv = cv2.cvtColor(imghsv.astype('uint8'), cv2.COLOR_HSV2RGB)
-
-    return imghsv
 
 if __name__ == '__main__':
     import argparse

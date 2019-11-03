@@ -13,6 +13,16 @@ def apply_contrast_brightness(img, *params):
     #new_image = cv2.addWeighted(img, alpha, img, 0, beta)
     return new_image
 
+def increase_sat(img):
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV).astype('float32')
+    h, s, v = cv2.split(img)
+    s = s + 200
+    s = np.clip(s,0,255)
+    imghsv = cv2.merge((h,s,v))
+    imghsv = cv2.cvtColor(imghsv.astype('uint8'), cv2.COLOR_HSV2RGB)
+
+    return imghsv
+
 if __name__ == '__main__':
     try:
         alpha = float(input('* Enter the contrast value [1.0 to 3.0]: '))
