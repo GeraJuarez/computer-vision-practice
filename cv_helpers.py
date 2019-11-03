@@ -3,6 +3,10 @@ from cv2 import cv2
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
 
+RGB_RED = (255, 0, 0)
+RGB_GREEN = (0, 255, 0)
+RGB_BLUE = (0, 0, 255)
+
 def plt_hist(data, title='', bins=256):
     plt.hist(data, bins)
     plt.title(title), plt.xticks([]), plt.yticks([])

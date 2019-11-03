@@ -11,7 +11,7 @@ def apply_sobel(img, *params):
     delta = 0
     kernel_size = 3
 
-    img = cv2.GaussianBlur(img, (3, 3), cv2.BORDER_DEFAULT)
+    img = cv2.GaussianBlur(img, (5, 5), cv2.BORDER_DEFAULT)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
     grad_x = cv2.Sobel(img, ddepth, 1, 0, ksize=kernel_size, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
@@ -57,7 +57,7 @@ def get_contours(rgb_img, color=(255,0,255), thickness=4):
 def calculate_area_perimeter(rgb_img, color=(255,0,255), thickness=4):
     gray_img = cv2.cvtColor(rgb_img, cv2.COLOR_RGB2GRAY)
     thresh = adaptative_biarization(gray_img)
-    _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     index = -1
     h, w, _ = rgb_img.shape
