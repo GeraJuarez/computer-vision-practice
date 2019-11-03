@@ -1,29 +1,62 @@
 import numpy as np
 from cv2 import cv2
-from cv_helpers import cv2_show_img, plt_show_img, start_cv_video
+from cv_helpers import cv2_show_img, plt_show_img, start_cv_video, RGB_RED, RGB_BLUE, RGB_GREEN
 from bright_contrast import apply_contrast_brightness
 from binarization import otsu_binarization, grayscale_binarization
 from edge_detection import apply_sobel, apply_canny, apply_prewitt
 
 def filter(img, *params):
-    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    saturated = increase_sat(img)
-    saturated_g = cv2.cvtColor(saturated, cv2.COLOR_RGB2GRAY)
-
     kernel = np.ones((3,3),np.uint8)
+    result = img.copy()
 
-    img = cv2.GaussianBlur(img, (5, 5), cv2.BORDER_DEFAULT)
     img = apply_sobel(img)
-    img = grayscale_binarization(img, threshold=10, bin_val=1)
+    img = grayscale_binarization(img, threshold=10, bin_val=255)
     img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel, 2)
-    return img# * saturated_g
 
-    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    result = draw_contours(img)
+    result = draw_circles(img)
+
+
+    return result
+    '''
     img = cv2.erode(img, kernel, iterations=1)
     img = cv2.dilate(img, kernel, iterations=1) 
     img = apply_contrast_brightness(img, 1, 20)
     img = otsu_binarization(img)
     img = cv2.dilate(img, kernel, iterations=3)
+    '''
+
+def draw_contours(img):
+    # TODO: Maybe use average or std dev of areas to filter the contours
+
+    output = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+    contours, _ = cv2.findContours(img.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    filtered_cnt = []
+    for cnt in contours:
+        perimeter = cv2.arcLength(cnt, True)
+        perimeter_points = cv2.approxPolyDP(cnt, 0.01 * perimeter, True)
+        area = cv2.contourArea(cnt)
+        if (10 < len(perimeter_points) < 20) and (1000 < area < 90000):
+            filtered_cnt.append(cnt)
+            cv2.drawContours(output, perimeter_points, -1, RGB_BLUE, 10)
+
+    cv2.drawContours(output, filtered_cnt, -1, RGB_RED, 2)
+    return output
+
+def draw_circles(img):
+    output = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+    circles = cv2.HoughCircles(img, cv2.HOUGH_GRADIENT, 1.2, minDist=100)#minDist=200, param1=30, param2=45, minRadius=0, maxRadius=0)
+    if circles is not None:
+        # convert the (x, y) coordinates and radius of the circles to integers
+        circles = np.round(circles[0, :]).astype("int")
+
+        for (x, y, r) in circles:
+            # draw the circle in the output image, then draw a rectangle
+            # corresponding to the center of the circle
+            cv2.circle(output, (x, y), r, RGB_GREEN, 4)
+            cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), RGB_GREEN, -1)
+    
+    return output
 
 def increase_sat(img):
     img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV).astype('float32')
